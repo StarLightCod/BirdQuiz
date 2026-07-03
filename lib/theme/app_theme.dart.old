@@ -1,0 +1,171 @@
+// lib/theme/app_theme.dart
+import 'package:flutter/material.dart';
+
+class AppTheme {
+  // === PALETTE: Deep Forest Night ===
+  // Rich forest greens, warm ambers, deep charcoal backgrounds
+  static const Color bg0 = Color(0xFF0E1511);       // deepest bg
+  static const Color bg1 = Color(0xFF141C18);       // card bg
+  static const Color bg2 = Color(0xFF1C2820);       // elevated surface
+  static const Color bg3 = Color(0xFF253329);       // hover / selected
+  static const Color accent = Color(0xFF6EBF8B);    // forest green accent
+  static const Color accentDim = Color(0xFF3D7A56); // dimmer green
+  static const Color amber = Color(0xFFE8A838);     // warm amber
+  static const Color amberDim = Color(0xFF9A6F22);
+  static const Color coral = Color(0xFFE86038);     // danger/wrong
+  static const Color sky = Color(0xFF5BA4CF);       // info/audio
+  static const Color textPrimary = Color(0xFFE8F0EB);
+  static const Color textSecondary = Color(0xFF8BAF96);
+  static const Color textMuted = Color(0xFF4A6655);
+  static const Color divider = Color(0xFF253329);
+  static const Color cardBorder = Color(0xFF2A3E30);
+
+  // Gradients
+  static const LinearGradient bgGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF0E1511), Color(0xFF101A14), Color(0xFF0A1210)],
+  );
+
+  static const LinearGradient accentGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF6EBF8B), Color(0xFF4A9C6A)],
+  );
+
+  static const LinearGradient amberGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFFE8A838), Color(0xFFD4891A)],
+  );
+
+  static ThemeData get theme {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: bg0,
+      fontFamily: 'Spectral', // elegant serif feel — or use system serif
+      colorScheme: const ColorScheme.dark(
+        primary: accent,
+        secondary: amber,
+        error: coral,
+        surface: bg1,
+        onPrimary: bg0,
+        onSecondary: bg0,
+        onSurface: textPrimary,
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: textPrimary,
+        titleTextStyle: TextStyle(
+          color: textPrimary,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.5,
+        ),
+      ),
+      cardTheme: const CardThemeData(
+        color: bg1,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(16),
+          side: const BorderSide(color: cardBorder, width: 1),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: accent,
+          foregroundColor: bg0,
+          shape: RoundedRectangleBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(12),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.3,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: accent,
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: bg2,
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(12),
+          borderSide: const BorderSide(color: cardBorder),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(12),
+          borderSide: const BorderSide(color: cardBorder),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(12),
+          borderSide: const BorderSide(color: accent, width: 1.5),
+        ),
+        hintStyle: const TextStyle(color: textMuted),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) return accent;
+          return Colors.transparent;
+        }),
+        checkColor: WidgetStateProperty.all(bg0),
+        shape: RoundedRectangleBorder(borderRadius: const BorderRadius.all(Radius.circular(4)),
+        side: const BorderSide(color: textMuted, width: 1.5),
+      ),
+    );
+  }
+}
+
+// Text styles
+class AppText {
+  static const TextStyle hero = TextStyle(
+    fontSize: 42,
+    fontWeight: FontWeight.w800,
+    color: AppTheme.textPrimary,
+    letterSpacing: -1.0,
+    height: 1.1,
+  );
+  static const TextStyle h1 = TextStyle(
+    fontSize: 28,
+    fontWeight: FontWeight.w700,
+    color: AppTheme.textPrimary,
+    letterSpacing: -0.5,
+  );
+  static const TextStyle h2 = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: AppTheme.textPrimary,
+    letterSpacing: -0.2,
+  );
+  static const TextStyle h3 = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: AppTheme.textPrimary,
+  );
+  static const TextStyle body = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    color: AppTheme.textPrimary,
+    height: 1.5,
+  );
+  static const TextStyle small = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: AppTheme.textSecondary,
+    letterSpacing: 0.2,
+  );
+  static const TextStyle label = TextStyle(
+    fontSize: 11,
+    fontWeight: FontWeight.w700,
+    color: AppTheme.textMuted,
+    letterSpacing: 1.2,
+  );
+}
