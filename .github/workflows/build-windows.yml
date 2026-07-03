@@ -16,15 +16,12 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.6'
+          flutter-version: '3.24.5'
           channel: 'stable'
           cache: true
 
       - name: Add Windows platform support
         run: flutter create --project-name bird_quiz --platforms=windows .
-
-      - name: Setup Visual Studio
-        uses: microsoft/setup-msbuild@v2
 
       - name: Enable Windows desktop support
         run: flutter config --enable-windows-desktop
@@ -33,7 +30,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Windows release
-        run: flutter build windows --release --verbose
+        run: flutter build windows --release
 
       - name: Upload Windows build artifact
         uses: actions/upload-artifact@v4
