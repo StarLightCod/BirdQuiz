@@ -3,7 +3,7 @@ name: Build Windows
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch: # Позволяет запускать сборку вручную кнопкой
+  workflow_dispatch:
 
 jobs:
   build-windows:
@@ -18,6 +18,13 @@ jobs:
         with:
           flutter-version: '3.19.6'
           channel: 'stable'
+          cache: true
+
+      - name: Add Windows platform support
+        run: flutter create . --platforms=windows
+
+      - name: Setup Visual Studio
+        uses: microsoft/setup-msbuild@v2
 
       - name: Enable Windows desktop support
         run: flutter config --enable-windows-desktop
@@ -26,7 +33,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Windows release
-        run: flutter build windows --release
+        run: flutter build windows --release --verbose
 
       - name: Upload Windows build artifact
         uses: actions/upload-artifact@v4
