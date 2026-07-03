@@ -21,7 +21,7 @@ jobs:
           cache: true
 
       - name: Add Windows platform support
-        run: flutter create . --platforms=windows
+        run: flutter create --project-name bird_quiz --platforms=windows .
 
       - name: Setup Visual Studio
         uses: microsoft/setup-msbuild@v2
