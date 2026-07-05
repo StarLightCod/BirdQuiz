@@ -1,17 +1,103 @@
-# bird_quiz
+# 🐦 Bird Quiz — Викторина по определению птиц России
 
-A new Flutter project.
+[![Build Windows](https://github.com/StarLightCod/BirdQuiz/actions/workflows/build-windows.yml/badge.svg)](https://github.com/StarLightCod/BirdQuiz/actions/workflows/build-windows.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Flutter](https://img.shields.io/badge/Flutter-3.24-02569B?logo=flutter)](https://flutter.dev)
+[![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20Windows-orange)]()
+[![Latest Release](https://img.shields.io/github/v/release/StarLightCod/BirdQuiz?label=Latest%20Release&color=green)](https://github.com/StarLightCod/BirdQuiz/releases/latest)
 
-## Getting Started
+**Bird Quiz** — интерактивное приложение для изучения птиц России. Идеальный помощник для подготовки к **биологическим олимпиадам**, **ЕГЭ по биологии** и **вступительным экзаменам в вузы** (биофак, экология, зоология).
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 📥 Скачать приложение
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+👉 **[Скачать последнюю версию Bird Quiz](https://github.com/StarLightCod/BirdQuiz/releases/latest)**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+На странице релиза вы найдёте готовые установочные файлы для вашей операционной системы:
+
+| Платформа | Файл | Инструкция |
+|-----------|------|------------|
+|  **Windows** | `BirdQuiz-Windows.zip` | Распакуйте архив и запустите `bird_quiz.exe` |
+|  **Linux** (Debian/Ubuntu/Mint) | `bird-quiz_*.deb` | Установите как обычный пакет |
+|  **Linux** (другие дистрибутивы) | Исходный код | Соберите из исходников (см. ниже) |
+
+---
+
+##  Возможности
+
+- 📚 **Каталог из 789 видов птиц России** с русскими и латинскими названиями
+- 🎵 **Голоса птиц** из базы Xeno-canto (предпрослушивание перед скачиванием)
+- 📷 **Фотографии** из iNaturalist с зумом и навигацией
+- 🎯 **Три режима викторины**: по фото, по звуку, комплексный
+- 📊 **4 уровня сложности**: от простого до эксперта
+- 🛠️ **Конструктор карточек** — загружайте свои фото и звуки
+- 💻 **Кроссплатформенность**: Linux и Windows
+- 🌙 **Тёмная тема** и настройка интерфейса
+
+---
+
+## 🎓 Для кого это приложение?
+
+| Аудитория | Как использовать |
+|-----------|------------------|
+| 🏆 **Школьники** | Подготовка к олимпиадам по биологии и экологии |
+| 🎓 **Абитуриенты** | Тренировка перед экзаменами на биофаки |
+| 👨‍ **Преподаватели** | Использование на уроках биологии |
+| 🐦 **Орнитологи-любители** | Изучение и определение птиц в поле |
+
+---
+
+## 📖 Подробная инструкция по установке
+
+### 🪟 Windows
+
+**Шаг 1. Скачайте архив**
+
+Перейдите на [страницу релизов](https://github.com/StarLightCod/BirdQuiz/releases/latest) и скачайте файл `BirdQuiz-Windows.zip`.
+
+**Шаг 2. Распакуйте архив**
+
+1. Найдите скачанный файл (обычно в папке `Загрузки`)
+2. Нажмите по нему **правой кнопкой мыши** → **Извлечь всё...**
+3. Выберите папку для распаковки (например, `C:\Programs\BirdQuiz\`)
+4. Нажмите **Извлечь**
+
+**Шаг 3. Запустите приложение**
+
+1. Откройте распакованную папку
+2. Найдите файл **`bird_quiz.exe`**
+3. Дважды кликните по нему — приложение запустится!
+
+> ⚠️ **Важно!**
+> - Запускайте `bird_quiz.exe` **только из распакованной папки**, не перемещайте его отдельно!
+> - Рядом с exe-файлом должна быть папка `data` — без неё приложение не работает.
+> - При первом запуске Windows может показать предупреждение "Защитник Windows защитил ваш компьютер". Нажмите **"Подробнее"** → **"Выполнить в любом случае"**.
+
+---
+
+### 🐧 Linux
+
+#### Для Debian, Ubuntu, Linux Mint и производных
+
+**Шаг 1. Скачайте .deb пакет**
+
+Перейдите на [страницу релизов](https://github.com/StarLightCod/BirdQuiz/releases/latest) и скачайте файл `bird-quiz_*.deb`.
+
+**Шаг 2. Установите пакет**
+
+**Способ А: Через графический интерфейс**
+1. Найдите скачанный файл (обычно в папке `Загрузки`)
+2. Дважды кликните по нему — откроется центр приложений
+3. Нажмите **Установить** и введите пароль
+
+**Способ Б: Через терминал**
+```bash
+# Перейдите в папку со скачанным файлом
+cd ~/Загрузки
+
+# Установите пакет
+sudo dpkg -i bird-quiz_*.deb
+
+# Если возникнут ошибки зависимостей, выполните:
+sudo apt-get install -f
