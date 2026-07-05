@@ -1,4 +1,5 @@
 // lib/models/bird_data.dart
+
 class BirdData {
   static const List<String> allBirds = [
     "Краснозобая гагара", "Чернозобая гагара", "Малая поганка", "Серощекая поганка",
@@ -38,6 +39,167 @@ class BirdData {
     "Зяблик", "Юрок", "Зеленушка", "Чиж", "Щегол", "Обыкновенная чечетка", "Коноплянка",
     "Чечевица", "Щур", "Клест сосновик", "Клест еловик", "Снегирь", "Дубонос",
   ];
+
+  // ==========================================
+  // МАППИНГ: Русское название -> Латинское имя файла картинки
+  // ==========================================
+  static const Map<String, String> birdImageFiles = {
+    "Краснозобая гагара": "krasnozobaya_gagarka.jpeg",
+    "Чернозобая гагара": "chernozobaya_gagarka.jpeg",
+    "Малая поганка": "malaya_poganka.jpg",
+    "Чомга (большая поганка)": "chomga.jpg",
+    "Большая белая цапля": "bolshaya_belaya_tsaplya.jpg",
+    "Серая цапля": "seraya-tsaplya.jpg",
+    "Большая выпь": "bolshaya_vyp.jpg",
+    "Малая выпь (волчок)": "malaya_vyp.jpg",
+    "Кваква": "kvakva.jpeg",
+    "Белый аист": "belyy_aist.jpg",
+    "Черный аист": "chyornyy_aist.jpeg",
+    "Глухарь": "gluhar.jpg",
+    "Рябчик": "ryabchik.jpg",
+    "Серая куропатка": "seraya_kuropatka.jpg",
+    "Белая куропатка": "belaya_kuropatka.jpg",
+    "Перепел": "perepel.jpg",
+    "Короткохвостый поморник": "korotkohvostyy_pomornik.jpeg",
+    "Длиннохвостый поморник": "dlinnohvostyy_pomornik.jpeg",
+    "Озёрная чайка": "ozyornaya_chayka.jpg",
+    "Клуша": "klusha.jpeg",
+    "Серебристая чайка": "serebristaya_chayka.jpg",
+    "Сизая чайка": "sizaya_chayka.jpg",
+    "Чёрная крачка": "chernaya_krachka.jpg",
+    "Белокрылая крачка": "belokrylaya_krachka.jpg",
+    "Речная крачка": "rechnaya_krachka.jpg",
+    "Малая крачка": "malaya_krachka.jpeg",
+    "Люрик": "lyurik.jpg",
+    "Малый зуек": "malyy_zuyok.jpg",
+    "Чибис": "chibis.jpg",
+    "Обыкновенная кукушка": "obyknovennaya_kukushka.jpg",
+    "Филин": "filin.jpeg",
+    "Ушастая сова": "ushastaya_sova.jpeg",
+    "Болотная сова": "bolotnaya_sova.jpeg",
+    "Сплюшка": "splyushka.jpeg",
+    "Длиннохвостая неясыть": "dlinnohvostaya_neyasyt.jpeg",
+    "Обыкновенный козодой": "kozodoy_obyknovennyy.jpg",
+    "Черный стриж": "chyornyy_strizh.jpg",
+    "Сизоворонка": "sizovoronka.jpg",
+    "Зимородок": "zimorodok.jpg",
+    "Черный коршун": "chyornyy_korshun.jpg",
+    "Канюк": "kanyuk.jpg",
+    "Орлан-белохвост": "orlan-belohvost.jpg",
+    "Сапсан": "sapsan.jpg",
+    "Чеглок": "cheglok.jpg",
+    "Обыкновенная пустельга": "obyknovennaya_pustelga.jpg",
+    "Полевой жаворонок": "zhavoronok_polevoy.jpg",
+    "Полевой конёк": "polevoy_konyok.jpg",
+    "Лесной конёк": "lesnoy_konyok.jpg",
+    "Зарянка": "zaryanka.jpeg",
+    "Соловей": "solovey.jpg",
+    "Варакушка": "varakushka.jpg",
+    "Луговой чекан": "lugovoy_chekan_samets.jpg",
+    "Певчий дрозд": "pevchiy_drozd.jpeg",
+    "Желтоголовый королек": "korolyok_zheltogolovyy.jpg",
+    "Большая синица": "bolshaya_sinitsa.jpg",
+    "Речной сверчок": "rechnoy_sverchok.jpg",
+    "Обыкновенный сверчок": "obyknovennyy_sverchok.jpg",
+    "Поползень": "popolzen.jpeg",
+    "Крапивник": "krapivnik.jpeg",
+    "Галка": "galka.jpg",
+    "Ворон": "voron.jpg",
+    "Скворец": "skvorets.jpg",
+    "Иволга": "ivolga.jpg",
+    "Зяблик": "zyablik.jpg",
+    "Чиж": "chizh.jpeg",
+    "Щегол": "shchegol.jpg",
+    "Чечевица": "chechevitsa.jpg",
+    "Снегирь": "snegir.jpg",
+    "Свиристель": "sviristel.jpg",
+    "Тетерев-корсач": "teterev.png",
+    "Вяхирь": "vyahir.jpeg",
+    "Клинтух": "klintuh.jpg",
+    "Вальдшнеп": "valdshnep.png",
+    "Бекас": "Bekas.jpg",
+    "Сизый голубь": "sizyy_golub.png",
+    "Кольчатая горлица": "kolchataya_goritsa.jpg",
+    "Луговой чекан (самка)": "lugovoy_chekan_samka_.jpg",
+  };
+
+  // ==========================================
+  // МАППИНГ: Русское название -> Латинское имя файла аудио
+  // ==========================================
+  static const Map<String, String> birdAudioFiles = {
+    "Белокрылая крачка": "belokrylaya_krachka.mp3",
+    "Большая выпь": "bolshaya_vyp.mp3",
+    "Чеглок": "cheglok.mp3",
+    "Перепел": "chirikanie_perepela.mp3",
+    "Чёрная крачка": "chyornaya_krachka.mp3",
+    "Черный аист": "chyornyy_aist.mp3",
+    "Черный коршун": "chyornyy_korshun.mp3",
+    "Длиннохвостый поморник": "dlinnohvostyy_pomornik.mp3",
+    "Филин": "filin._evropa_aziya_amerika._golosa_ptits.mp3",
+    "Крапивник": "kak_poyot_krapivnik_audio_troglodytes_troglodytes.mp3",
+    "Канюк": "kanyuk.mp3",
+    "Клуша": "klusha._golosa_ptits.mp3",
+    "Коростель": "korostel.mp3",
+    "Короткохвостый поморник": "korotkohvostyy_pomornik.mp3",
+    "Лысуха": "lysuha.mp3",
+    "Люрик": "lyurik._golosa_ptits.mp3",
+    "Малая поганка": "malaya_poganka.mp3",
+    "Малая выпь (волчок)": "malaya_vyp.mp3",
+    "Обыкновенная пустельга": "obyknovennaya_pustelga.mp3",
+    "Орлан-белохвост": "orlan-belohvost.mp3",
+    "Озёрная чайка": "ozyornaya_chayka.mp3",
+    "Пеночка-теньковка": "penochka-tenkovka.mp3",
+    "Пеночка-трещотка": "penochka-treshchotka.mp3",
+    "Певчий дрозд": "pevchiy_drozd.mp3",
+    "Полевой конёк": "polevoy_konyok.mp3",
+    "Поползень": "popolzen.mp3",
+    "Глухарь": "samets_gluharya.mp3",
+    "Сапсан": "sapsan_falco_peregrinus_.mp3",
+    "Серая цапля": "seraya_tsaplya.mp3",
+    "Щегол": "shchegol.mp3",
+    "Сизая чайка": "sizaya_chayka.mp3",
+    "Сизоворонка": "sizovoronka.mp3",
+    "Соловей": "solovey.mp3",
+    "Обыкновенный сверчок": "sverchok._golosa_ptits.mp3",
+    "Свиристель": "sviristel.mp3",
+    "Тетерев-корсач": "teterev_lyrurus_tetrix_.mp3",
+    "Варакушка": "varakushka._golosa_ptits.mp3",
+    "Ворон": "voron.mp3",
+    "Полевой жаворонок": "zhavoronok_polevoy.mp3",
+    "Зимородок": "zimorodok.mp3",
+  };
+
+  // ==========================================
+  // МЕТОДЫ ДЛЯ ПОЛУЧЕНИЯ ПУТЕЙ К ФАЙЛАМ
+  // ==========================================
+
+  /// Получить путь к картинке птицы по её названию
+  static String? getImagePath(String birdName) {
+    final fileName = birdImageFiles[birdName];
+    if (fileName == null) return null;
+    return 'assets/images/$fileName';
+  }
+
+  /// Получить путь к аудио птицы по её названию
+  static String? getAudioPath(String birdName) {
+    final fileName = birdAudioFiles[birdName];
+    if (fileName == null) return null;
+    return 'assets/audio/$fileName';
+  }
+
+  /// Проверить, есть ли у птицы картинка
+  static bool hasImage(String birdName) {
+    return birdImageFiles.containsKey(birdName);
+  }
+
+  /// Проверить, есть ли у птицы аудио
+  static bool hasAudio(String birdName) {
+    return birdAudioFiles.containsKey(birdName);
+  }
+
+  // ==========================================
+  // ГРУППЫ ПТИЦ (без изменений)
+  // ==========================================
 
   static const Map<String, int> birdGroups = {
     "Краснозобая гагара": 1, "Чернозобая гагара": 1,

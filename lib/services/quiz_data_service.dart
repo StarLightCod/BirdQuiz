@@ -2,13 +2,14 @@ import 'dart:io';
 import '../models/bird_card.dart';
 import '../models/bird_data.dart';
 import '../services/bird_card_service.dart';
+import '../data/file_mapper.dart';
 
 /// Модель данных для викторины
 class QuizBirdData {
-  final String name; // Название птицы
-  final String? photoPath; // Путь к фото (null если нет)
-  final String? audioPath; // Путь к аудио (null если нет)
-  final bool isCustom; // true = карточка, false = встроенная птица
+  final String name;
+  final String? photoPath;
+  final String? audioPath;
+  final bool isCustom;
 
   QuizBirdData({
     required this.name,
@@ -20,13 +21,13 @@ class QuizBirdData {
   /// Получить путь к фото из assets (для встроенных птиц)
   String? get assetPhotoPath {
     if (isCustom || photoPath != null) return photoPath;
-    return 'assets/images/$name.jpg';
+    return FileMapper.getImagePath(name);
   }
 
   /// Получить путь к аудио из assets (для встроенных птиц)
   String? get assetAudioPath {
     if (isCustom || audioPath != null) return audioPath;
-    return 'assets/audio/$name.mp3';
+    return FileMapper.getAudioPath(name);
   }
 }
 
@@ -34,16 +35,30 @@ class QuizBirdData {
 class QuizDataService {
   final BirdCardService _cardService = BirdCardService();
 
-  /// Получить список птиц для викторины
+  /// Получить список птиц для викторины с фильтрацией по режиму
   Future<List<QuizBirdData>> getQuizBirds(
     List<String> selectedBirds,
     List<String> selectedCards,
     bool useCardsMode,
+    QuizMode mode,
   ) async {
     if (useCardsMode) {
       return await _getCardsData(selectedCards);
     } else {
-      return _getBirdsData(selectedBirds);
+      var birds = _getBirdsData(selectedBirds);
+      // Фильтрация по наличию медиа в зависимости от режима
+      switch (mode) {
+        case QuizMode.images:
+          birds = birds.where((b) => FileMapper.hasImage(b.name)).toList();
+          break;
+        case QuizMode.audio:
+          birds = birds.where((b) => FileMapper.hasAudio(b.name)).toList();
+          break;
+        case QuizMode.complex:
+          birds = birds.where((b) => FileMapper.hasImage(b.name) && FileMapper.hasAudio(b.name)).toList();
+          break;
+      }
+      return birds;
     }
   }
 
@@ -63,7 +78,6 @@ class QuizDataService {
         ));
       }
     }
-
     return result;
   }
 
@@ -80,8 +94,7 @@ class QuizDataService {
     if (bird.isCustom) {
       return bird.photoPath != null && File(bird.photoPath!).existsSync();
     }
-    // Для встроенных птиц проверяем assets
-    return true; // Предполагаем что assets есть
+    return bird.assetPhotoPath != null;
   }
 
   /// Проверить, есть ли аудио для птицы
@@ -89,7 +102,7 @@ class QuizDataService {
     if (bird.isCustom) {
       return bird.audioPath != null && File(bird.audioPath!).existsSync();
     }
-    return true; // Предполагаем что assets есть
+    return bird.assetAudioPath != null;
   }
 }
 
