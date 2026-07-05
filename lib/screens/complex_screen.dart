@@ -7,9 +7,11 @@ import '../models/app_state.dart';
 import '../models/quiz_logic.dart';
 import '../services/audio_service.dart';
 import '../services/asset_service.dart';
+import '../data/asset_names.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common_widgets.dart';
 import '../utils/responsive.dart';
+import '../data/file_mapper.dart';
 
 class _BirdCard {
   final String assetPath;
@@ -72,14 +74,24 @@ class _ComplexScreenState extends State<ComplexScreen> {
     _initGame();
   }
 
+  // ============================================================
+  // ИСПРАВЛЕННЫЙ _decodeName
+  // ============================================================
   String _decodeName(String assetPath) {
     final filename = assetPath.split('/').last;
+    
+    // 1. Пробуем через FileMapper (он использует AssetNames)
+    final fromMapper = FileMapper.getBirdNameByImageFile(filename) 
+        ?? FileMapper.getBirdNameByAudioFile(filename);
+    if (fromMapper != null) return fromMapper;
+    
+    // 2. Fallback: старая логика
     String decoded;
     try { decoded = Uri.decodeComponent(filename); } catch (_) { decoded = filename; }
     final noExt = decoded.replaceAll(RegExp(r'\.[^.]+$'), '');
     return QuizLogic.extractBirdName(noExt.replaceAll('_', ' ').trim());
   }
-
+  
   List<String> _buildPool() {
     final appState = context.read<AppState>();
     final selected = appState.selectedBirds;
@@ -650,7 +662,7 @@ class _ImageCardWidget extends StatelessWidget {
               borderRadius: const BorderRadius.vertical(top: Radius.circular(9)),
               child: Image.asset(
                 card.assetPath,
-                fit: BoxFit.contain,  // ← не обрезает
+                fit: BoxFit.contain,
                 width: double.infinity,
                 height: double.infinity,
                 errorBuilder: (_, __, ___) => Container(

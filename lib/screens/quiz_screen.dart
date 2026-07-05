@@ -1,3 +1,4 @@
+// lib/screens/quiz_screen.dart
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -53,10 +54,12 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() => _isLoading = true);
     
     final appState = context.read<AppState>();
+    // Передаём widget.mode для фильтрации
     final birds = await _quizDataService.getQuizBirds(
       appState.selectedBirds,
       appState.selectedCards,
       appState.useCardsMode,
+      widget.mode,
     );
     
     // Перемешиваем КОПИЮ списка
@@ -73,8 +76,8 @@ class _QuizScreenState extends State<QuizScreen> {
 
   Future<void> _playAudio(QuizBirdData bird) async {
     final audioPath = bird.isCustom 
-        ? bird.audioPath
-        : 'assets/audio/${bird.name}.mp3';
+        ? bird.audioPath 
+        : bird.assetAudioPath;
     
     if (audioPath != null) {
       await _audioService.play(audioPath);
@@ -299,7 +302,6 @@ class _QuizScreenState extends State<QuizScreen> {
 
   Widget _buildPhotoWidget(QuizBirdData bird) {
     if (bird.isCustom) {
-      // Пользовательская карточка
       if (bird.photoPath != null && File(bird.photoPath!).existsSync()) {
         return Image.file(
           File(bird.photoPath!),
@@ -309,12 +311,15 @@ class _QuizScreenState extends State<QuizScreen> {
       }
       return _buildPlaceholder();
     } else {
-      // Встроенная птица - из assets
-      return Image.asset(
-        'assets/images/${bird.name}.jpg',
-        fit: BoxFit.contain,
-        errorBuilder: (_, __, ___) => _buildPlaceholder(),
-      );
+      final photoPath = bird.assetPhotoPath;
+      if (photoPath != null) {
+        return Image.asset(
+          photoPath,
+          fit: BoxFit.contain,
+          errorBuilder: (_, __, ___) => _buildPlaceholder(),
+        );
+      }
+      return _buildPlaceholder();
     }
   }
 

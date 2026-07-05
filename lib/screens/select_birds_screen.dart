@@ -20,6 +20,7 @@ class SelectBirdsScreen extends StatefulWidget {
 class _SelectBirdsScreenState extends State<SelectBirdsScreen> {
   final _cardService = BirdCardService();
   List<BirdCard> _myCards = [];
+  String _searchQuery = '';
 
   @override
   void initState() {
@@ -32,16 +33,6 @@ class _SelectBirdsScreenState extends State<SelectBirdsScreen> {
     if (mounted) {
       setState(() => _myCards = cards);
     }
-  }
-
-  bool get _hasSelectedCards {
-    final appState = context.read<AppState>();
-    return appState.selectedCards.isNotEmpty;
-  }
-
-  bool get _hasSelectedRegularBirds {
-    final appState = context.read<AppState>();
-    return appState.selectedBirds.isNotEmpty;
   }
 
   @override
@@ -67,6 +58,7 @@ class _SelectBirdsScreenState extends State<SelectBirdsScreen> {
               children: [
                 const SizedBox(height: 16),
 
+                // Переключатель режимов
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: GlassCard(
@@ -77,7 +69,7 @@ class _SelectBirdsScreenState extends State<SelectBirdsScreen> {
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  if (_hasSelectedCards) {
+                                  if (appState.selectedCards.isNotEmpty) {
                                     _showModeSwitchWarning('карточки');
                                   } else {
                                     appState.setUseCardsMode(false);
@@ -128,7 +120,7 @@ class _SelectBirdsScreenState extends State<SelectBirdsScreen> {
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  if (_hasSelectedRegularBirds) {
+                                  if (appState.selectedBirds.isNotEmpty) {
                                     _showModeSwitchWarning('птицы');
                                   } else {
                                     appState.setUseCardsMode(true);
@@ -180,65 +172,24 @@ class _SelectBirdsScreenState extends State<SelectBirdsScreen> {
 
                         const SizedBox(height: 12),
 
-                        if (!appState.useCardsMode) ...[
-                          Row(
-                            children: [
-                              Expanded(
-                                child: OutlinedButton.icon(
-                                  onPressed: () => appState.selectAllBirds(),
-                                  icon: const Icon(Icons.check_box, size: 16),
-                                  label: const Text('Выбрать всех'),
-                                  style: OutlinedButton.styleFrom(
-                                    foregroundColor: AppTheme.accent,
-                                    side: BorderSide(color: AppTheme.accent.withOpacity(0.5)),
-                                    padding: const EdgeInsets.symmetric(vertical: 8),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: OutlinedButton.icon(
-                                  onPressed: () => appState.clearSelectedBirds(),
-                                  icon: const Icon(Icons.check_box_outline_blank, size: 16),
-                                  label: const Text('Убрать всех'),
-                                  style: OutlinedButton.styleFrom(
-                                    foregroundColor: AppTheme.coral,
-                                    side: BorderSide(color: AppTheme.coral.withOpacity(0.5)),
-                                    padding: const EdgeInsets.symmetric(vertical: 8),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Выбрано: ${appState.selectedBirds.length}',
-                                style: AppText.small,
-                              ),
-                              Text(
-                                'Всего: ${BirdData.allBirds.length}',
-                                style: AppText.small,
-                              ),
-                            ],
-                          ),
-                        ] else ...[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Карточек: ${appState.selectedCards.length}',
-                                style: AppText.small,
-                              ),
-                              Text(
-                                'Всего: ${_myCards.length}',
-                                style: AppText.small,
-                              ),
-                            ],
-                          ),
-                        ],
+                        // Статистика
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              appState.useCardsMode
+                                  ? 'Выбрано карточек: ${appState.selectedCards.length}'
+                                  : 'Выбрано птиц: ${appState.selectedBirds.length}',
+                              style: AppText.small,
+                            ),
+                            Text(
+                              appState.useCardsMode
+                                  ? 'Всего карточек: ${_myCards.length}'
+                                  : 'Всего птиц: ${BirdData.allBirds.length}',
+                              style: AppText.small,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -246,6 +197,65 @@ class _SelectBirdsScreenState extends State<SelectBirdsScreen> {
 
                 const SizedBox(height: 16),
 
+                // Поиск и кнопки
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          onChanged: (v) => setState(() => _searchQuery = v),
+                          decoration: const InputDecoration(
+                            hintText: 'Поиск...',
+                            prefixIcon: Icon(Icons.search),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      OutlinedButton(
+                        onPressed: () {
+                          if (appState.useCardsMode) {
+                            // Выбрать все карточки
+                            final allNames = _myCards.map((c) => c.name).toList();
+                            for (final name in allNames) {
+                              if (!appState.selectedCards.contains(name)) {
+                                appState.toggleCard(name);
+                              }
+                            }
+                          } else {
+                            // Выбрать всех птиц (с учётом фильтра)
+                            final filtered = _filteredBirds;
+                            for (final bird in filtered) {
+                              if (!appState.selectedBirds.contains(bird)) {
+                                appState.toggleBird(bird);
+                              }
+                            }
+                          }
+                        },
+                        child: const Text('Все'),
+                      ),
+                      const SizedBox(width: 4),
+                      OutlinedButton(
+                        onPressed: () {
+                          if (appState.useCardsMode) {
+                            for (final name in appState.selectedCards.toList()) {
+                              appState.toggleCard(name);
+                            }
+                          } else {
+                            for (final bird in appState.selectedBirds.toList()) {
+                              appState.toggleBird(bird);
+                            }
+                          }
+                        },
+                        child: const Text('Сбросить'),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Основной список
                 Expanded(
                   child: appState.useCardsMode
                       ? _buildCardsList(appState)
@@ -257,6 +267,13 @@ class _SelectBirdsScreenState extends State<SelectBirdsScreen> {
         ),
       ),
     );
+  }
+
+  List<String> get _filteredBirds {
+    final all = BirdData.allBirds;
+    if (_searchQuery.isEmpty) return all;
+    final q = _searchQuery.toLowerCase();
+    return all.where((b) => b.toLowerCase().contains(q)).toList();
   }
 
   void _showModeSwitchWarning(String currentMode) {
@@ -310,29 +327,15 @@ class _SelectBirdsScreenState extends State<SelectBirdsScreen> {
   }
 
   Widget _buildBirdsList(AppState appState) {
-    final grouped = <int, List<String>>{};
-    for (final bird in appState.selectedBirds) {
-      final group = BirdData.birdGroups[bird] ?? 0;
-      if (!grouped.containsKey(group)) {
-        grouped[group] = [];
-      }
-      grouped[group]!.add(bird);
-    }
-
-    if (grouped.isEmpty) {
+    final filtered = _filteredBirds;
+    if (filtered.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.pets, size: 64, color: AppTheme.textMuted),
+            Icon(Icons.search_off, size: 64, color: AppTheme.textMuted),
             const SizedBox(height: 16),
-            Text('Нет выбранных птиц', style: AppText.h3),
-            const SizedBox(height: 8),
-            Text(
-              'Нажмите "Выбрать всех" или добавьте птиц вручную',
-              style: AppText.small,
-              textAlign: TextAlign.center,
-            ),
+            Text('Нет птиц, соответствующих поиску', style: AppText.h3),
           ],
         ),
       );
@@ -340,24 +343,26 @@ class _SelectBirdsScreenState extends State<SelectBirdsScreen> {
 
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      itemCount: grouped.length,
+      itemCount: filtered.length,
       itemBuilder: (ctx, i) {
-        final groupNum = grouped.keys.elementAt(i);
-        final birds = grouped[groupNum]!;
-        final groupName = BirdData.groupNames[groupNum] ?? 'Другие';
-
-        return _BirdGroupTile(
-          groupName: groupName,
-          birds: birds,
-          onRemove: (bird) {
-            appState.toggleBird(bird);
-          },
+        final bird = filtered[i];
+        final isSelected = appState.selectedBirds.contains(bird);
+        return CheckboxListTile(
+          value: isSelected,
+          title: Text(bird),
+          onChanged: (_) => appState.toggleBird(bird),
+          controlAffinity: ListTileControlAffinity.leading,
+          activeColor: AppTheme.accent,
+          secondary: isSelected
+              ? Icon(Icons.check_circle, color: AppTheme.accent)
+              : null,
         );
       },
     );
   }
 }
 
+// Вспомогательный виджет для карточек (без изменений)
 class _CardTileWithCheckbox extends StatelessWidget {
   final BirdCard card;
   const _CardTileWithCheckbox({required this.card});
@@ -436,69 +441,6 @@ class _CardTileWithCheckbox extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _BirdGroupTile extends StatelessWidget {
-  final String groupName;
-  final List<String> birds;
-  final Function(String) onRemove;
-
-  const _BirdGroupTile({
-    required this.groupName,
-    required this.birds,
-    required this.onRemove,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: GlassCard(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(groupName, style: AppText.h3),
-                ),
-                Text(
-                  '${birds.length} птиц',
-                  style: AppText.small,
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Divider(color: AppTheme.cardBorder),
-            const SizedBox(height: 8),
-            ...birds.map((bird) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        bird,
-                        style: AppText.body,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.remove_circle_outline, size: 20),
-                      color: AppTheme.coral,
-                      onPressed: () => onRemove(bird),
-                      tooltip: 'Убрать из списка',
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                    ),
-                  ],
-                ),
-              );
-            }),
-          ],
         ),
       ),
     );

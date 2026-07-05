@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
 import 'models/app_state.dart';
 import 'services/theme_service.dart';
 import 'theme/app_theme.dart';
@@ -9,7 +8,6 @@ import 'screens/main_menu_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.landscapeLeft,
@@ -18,7 +16,7 @@ void main() async {
 
   final appState = AppState();
   final themeService = ThemeService();
-
+  
   await Future.wait([
     appState.load(),
     themeService.load(),
@@ -44,11 +42,11 @@ class BirdQuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeService = context.watch<ThemeService>();
-    
-    // Обновляем цвета при каждом изменении темы
     AppTheme.updateFromService(themeService);
-
+    
     return MaterialApp(
+      // 👇 КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: key заставляет пересоздать MaterialApp при смене темы
+      key: ValueKey('theme-${themeService.mode}-${themeService.presetId}-${themeService.useCustom}'),
       title: 'Птицы — викторина',
       debugShowCheckedModeBanner: false,
       themeMode: themeService.themeMode,
